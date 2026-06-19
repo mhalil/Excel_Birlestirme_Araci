@@ -89,6 +89,9 @@ class ExcelMergerWorker(QThread):
 
         # Okuma parametrelerini ayarla
         read_kwargs = {}
+        # .xls dosyaları için calamine motoru (yeni pandas sürümlerinde xlrd desteği kalktı)
+        if str(file_path).lower().endswith('.xls') and not str(file_path).lower().endswith('.xlsm'):
+            read_kwargs["engine"] = "calamine"
         if use_sheet and sheet_name:
             if sheet_name.isdigit():
                 read_kwargs["sheet_name"] = int(sheet_name)
@@ -425,14 +428,14 @@ class ExcelMergerApp(QMainWindow):
         msg = QMessageBox(self)
         msg.setWindowTitle("Hakkında")
         msg.setIcon(QMessageBox.Information)
-        msg.setText("<b>Excel Birleştirme Aracı v2.0</b>")
+        msg.setText("<b>Excel Birleştirme Aracı v2.1</b>")
         msg.setInformativeText(
             "Bu program, seçili dizindeki Excel dosyalarını belirlediğiniz kurallara göre "
             "tek bir dosyada birleştirmek için geliştirilmiştir.<br><br>"
             "<b>Vibe Coder:</b> Mustafa Halil GÖRENTAŞ<br>"
             "<li>Kaynak Kod: <a href=\"https://github.com/mhalil/Excel_Birlestir_GUI\">github.com/mhalil/Excel_Birlestir_GUI</a></li>"
             "<p><b>Teknik Bilgiler:</b></p>"
-            "<li>Platform: Google Antigravity</li>"
+            "<li>Platform: Google Antigravity ve OpenCode</li>"
             "<li>Metodoloji: Vibe Coding</li>"
             "<li>Programlama Dili: Python (3.12.4)</li>"
             "<li>Kullanılan Kütüphaneler: Pandas, Openpyxl, xlwt, xlrd, PySide6</li>"
